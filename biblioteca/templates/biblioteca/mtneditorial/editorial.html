@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Biblioteca</title>
+{% load static %}
+{% include ".././menu.html" %}
+
+</head>
+<body>
+
+	<div class="container">
+
+		<div class="form-group" style="color: blue">{{ resultado }}</div>
+
+		<fieldset>
+		
+			<form class="form-horizontal" action="" enctype="multipart/form-data"
+				method="POST">
+
+				{% csrf_token %}
+				
+				{% if not form.editorial.value %}
+				  <legend>Ingresar Editorial</legend>
+				{% else %}
+				  <legend>Actualizar Editorial</legend>
+				{% endif %}
+
+				{% for field in form %}
+				  <div class="form-group">
+				    <label class="col-sm-2 control-label">{{ field.label_tag }}</label>
+				      <div class="col-sm-4">
+				        {{ field }}
+				      </div>
+				  </div>
+				{% endfor %}
+				
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">
+						  Guardar cambios
+						</button>
+					</div>
+				</div>
+			</form>
+
+		</fieldset>
+
+		<br />
+
+		{% if not form.editorial.value %}
+		
+		<table class="table table-bordered">
+			<tr>
+				<td><b>#</b></td>
+				<td><b>Editorial</b></td>
+				<td colspan="2"></td>
+			</tr>
+			{% for editorial in editoriales %}
+			<tr>
+				<td><b> {{ forloop.counter0|add:editoriales.start_index }} </b></td>
+				<td>{{ editorial.editorial }}</td>
+				<td><a href="/biblioteca/editorial/update/{{ editorial.id }}" title='Actualizar'>
+						<i class="glyphicon glyphicon-pencil"></i>
+				</a></td>
+				<td><a class="confirm" href="/biblioteca/editorial/delete/{{ editorial.id }}"
+					title='Eliminar'> <i class="glyphicon glyphicon-remove"></i>
+				</a></td>
+			</tr>
+			{% endfor %}
+
+		</table>
+
+		<div align="center">
+			{% if editoriales.has_other_pages %}
+		    <ul class="pagination">
+		    {% if editoriales.has_previous %}
+		      <li><a href="?page={{ editoriales.previous_page_number }}">&laquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&laquo;</span></li>
+		    {% endif %}
+		    {% for i in editoriales.paginator.page_range %}
+		      {% if editoriales.number == i %}
+		        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li><a href="?page={{ i }}">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+		    {% if editoriales.has_next %}
+		      <li><a href="?page={{ editoriales.next_page_number }}">&raquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span>&raquo;</span></li>
+		    {% endif %}
+		    </ul>
+		  {% endif %}
+		</div>
+		
+		{% endif %}
+
+	</div>
+
+	<br />
+	<br />
+
+</body>
+</html>
