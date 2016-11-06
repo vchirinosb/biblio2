@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Biblioteca</title>
+
+{% load static %}
+{% include ".././biblioteca/menu.html" %}
+
+</head>
+<body>
+
+
+	<div class="container">
+
+		{% if form.errors %}
+		  <div class="form-group" style="color: red">
+		    Su usuario y password no coinciden. Favor intenta nuevamente.
+		  </div>
+		{% endif %}
+
+		<fieldset>
+
+			<legend>Login de Usuario</legend>
+			
+			<form class="form-horizontal" action="{% url 'login' %}" enctype="multipart/form-data"
+				method="POST">
+
+				{% csrf_token %}
+				<div class="form-group">
+				  <label class="col-sm-2 control-label">Usuario(*):</label>
+				  <div class="col-sm-4">
+				    {{ form.username }}
+				  </div>
+				</div>
+				<div class="form-group">
+				  <label class="col-sm-2 control-label">Password(*):</label>
+				  <div class="col-sm-4">
+				    {{ form.password }}
+				  </div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">
+						  Login
+						</button>
+						<input type="hidden" name="next" value="{{ next }}" />
+					</div>
+				</div>
+			</form>
+
+		</fieldset>
+
+	</div>
+
+	<br />
+	<br />
+
+
+</body>
+</html>
